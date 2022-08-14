@@ -1,0 +1,12 @@
+logs
+*.log
+.DS_Store
+lib-cov
+coverage
+__snapshots__
+.idea
+.vscode
+build/Release
+build
+node_modules
+public

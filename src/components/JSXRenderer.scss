@@ -1,0 +1,9 @@
+.jsx-renderer {
+    &__error {
+        background: red;
+        color: #FFF;
+        position: fixed;
+        right: 0;
+        top: 0;
+    }
+}
