@@ -4,11 +4,11 @@
     "description": "Next evolution of Playroom",
     "scripts": {
         "clean": "shx rm -rf build",
-        "webpack": "webpack --config config/webpack.config.production.js",
+        "webpack": "webpack --config config/webpack.config.js",
         "sass": "node-sass src/styles/index.scss build/index.css --output-style compressed",
         "build": "npm run clean && npm run sass && npm run webpack",
         "lint": "eslint src config",
-        "start": "webpack-cli serve --mode development --config config/webpack.config.dev.js"
+        "start": "webpack-cli serve --mode development --config config/webpack.config.js"
     },
     "repository": {
         "type": "git",

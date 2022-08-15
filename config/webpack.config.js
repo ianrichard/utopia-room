@@ -10,12 +10,26 @@ const SRC_DIRECTORY = path.join(ROOT_DIRECTORY, 'src');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const config = {
-    entry: [path.resolve(__dirname, '../src/Index.jsx')],
+    // entry {
+    //     index: {
+
+    //     }
+    // }
+    entry: {
+        index: path.resolve(__dirname, '../src/routes/Index.jsx'),
+        frame: path.resolve(__dirname, '../src/routes/Frame.jsx')
+    },
     output: {
         path: path.resolve(__dirname, '../build'),
-        filename: 'bundle.js',
+        filename: '[name].[hash].js',
         publicPath: '/',
+        // chunkLoading: false,
     },
+    // optimization: {
+    //     splitChunks: {
+    //         chunks: 'all',
+    //     }
+    // },
     mode: 'development',
     resolve: {
         extensions: ['.js', '.jsx', '.scss'],
@@ -26,8 +40,18 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
+            chunks: ['index'],
+            filename: 'index.html',
             template: path.join(SRC_DIRECTORY, 'index.html'),
         }),
+        new HtmlWebpackPlugin({
+            chunks: ['frame'],
+            filename: 'frame/index.html',
+            template: path.join(SRC_DIRECTORY, 'index.html'),
+        }),
+        // new HtmlWebpackPlugin({
+        //     template: path.join(SRC_DIRECTORY, 'index.html'),
+        // }),
         isDevelopment && new ReactRefreshWebpackPlugin(),
         // new MonacoWebpackPlugin(),
         // new CopyWebpackPlugin({
@@ -76,5 +100,46 @@ const config = {
         ],
     },
 };
+
+if (isDevelopment) {
+    const port = 8080;
+
+    config.devServer = {
+        historyApiFallback: true,
+        contentBase: path.join(__dirname, '../build'),
+        port,
+    };
+
+    config.devtool = 'inline-source-map';
+    
+    if (process.env.GITPOD_WORKSPACE_URL) {
+        const workspaceUrl = process.env.GITPOD_WORKSPACE_URL;
+        const demoUrl = `https://${port}-${workspaceUrl.split('://')[1]}`;
+        config.devServer = {
+            // ...config.devServer,
+            // allowedHosts: ['.gitpod.io'],
+            // sockHost: `${port}-${workspaceUrl.split('://')[1]}`,
+            // sockPort: 443,
+            // sockPath: '',
+            // make HMR work - start
+      host: '0.0.0.0',
+      disableHostCheck: true,
+      public: require('child_process').execSync('gp url 8080').toString().trim(),
+      // make HMR work - end
+      
+      contentBase: path.join(__dirname, "../build"),    
+      port: 8080,
+      hot: false,
+      inline: false,
+    //   watchContentBase: true,        
+    //   watchOptions: {
+    //       poll: true
+    //   },
+        };
+        console.log(`project is running at ${demoUrl}`);
+    }
+} else {
+    config.mode = 'production';
+}
 
 module.exports = config;

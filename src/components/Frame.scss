@@ -1,0 +1,19 @@
+.frame {
+    background: #FFF;
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+    box-sizing: content-box;
+    margin: 16px;
+    width: 375px;
+
+    &--desktop {
+        width: 1024px;
+    }
+
+    &-group {
+        background: #F0F0F0;
+        height: 50vh;
+        display: flex;
+    }
+}
