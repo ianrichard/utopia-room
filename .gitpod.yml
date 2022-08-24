@@ -1,10 +1,16 @@
 # Learn more about this file at https://www.gitpod.io/docs/references/gitpod-yml
 tasks:
-  - init: npm install
-  - command: npm run start
+  - name: run-editor
+    init: npm run setup:editor 
+    command: npm run start:editor
+  - name: run-renderer 
+    init: npm run setup:editor
+    command: npm run start:renderer
 ports:
   - port: 3000
-    onOpen: open-preview
+    onOpen: open-browser
+  - port: 3001
+    onOpen: open-browser
 github:
   prebuilds:
     # enable for the default branch (defaults to true)
