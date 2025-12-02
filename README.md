@@ -1,76 +1,75 @@
-# Abstract UI
+# React + TypeScript + Vite
 
-## Overview
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-This is a WIP project I just started that will explore the viability of creating an API-driven configuration via JS or JSON for generating user interfaces vs explicitly coding them with React or any other framework.
+Currently, two official plugins are available:
 
-## How to Run
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-```terminal
-git clone git@github.com:ianrichard/utopia-room.git
-npm install
-npm run start
+## React Compiler
+
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+
+Note: This will impact Vite dev & build performances.
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-- Local [http://localhost:8080/](http://localhost:8080/)
-- Gitpod - click the link generated in the terminal
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-## Thanks
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-Thanks to who made the [react-webpack-babel](https://github.com/ReactJSResources/react-webpack-babel) lightweight boilerplate project I used as a starting point for this project. This also has Sass hooked up, so was exactly what I was looking for.
-
-## Roadmap
-
-### Pre-Release
-
-- Random v0 stuff
-  - Clean up lint stuff
-- Add all material components
-- Add component GUI
-  - Create + button
-  - Create components pane with position toggle
-  - Click + to append components to page
-- Add child component
-  - Add available children metadata to each component
-  - Add + button to each available child area
-- Create edit pane
-  - Create edit pane
-  - Add editable props on each component
-  - Add edit button to each component
-  - Add remove button to each component
-- Create edit vs display mode
-- JSON export
-- Documentation
-- Second library
-- Third library
-- Create patterns
-- Create templates
-- Contribution docs
-
-## Post-v1
-
-- Async support
-- Persist to back end
-- Multiple page support
-- Draft vs publish modes 
-- Themes
-- Proprietary props
-- Formatters 
-- Better lint settings
-- Check project for cruft code
-- Update libraries to latest
-- Code splitting 
-- Events callbacks for forms
-- Event callbacks for analytics
-- Page flow component
-- Browser routing
-- Private user accounts
-- Project sharing
-- Unit tests
-- Edit versioning
-- Last working state mode
-- Multi person edit mode
-- Locking 
-- Host demo
-- Cut / copy / paste
-- Keyboard shortcut toggles for panes
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
